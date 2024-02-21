@@ -32,8 +32,10 @@ function App() {
   async function handleSubmit(e) {
     e.preventDefault();
     const formData = { name, favoriteColor, avatar, rememberMe };
-    const data = await postUsers(formData);
-    console.log({ formData, data });
+    await postUsers(formData);
+    const updatedUsers = await getUsers();
+    setUsers(updatedUsers);
+    console.log({ formData });
   }
   return (
     <>
