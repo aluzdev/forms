@@ -1,13 +1,20 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import "./App.css";
 import { Form } from "./components/Form";
+import { Card } from "./components/Card";
+import { getUsers, postUsers } from "./api/users";
 
 function App() {
   const [name, setName] = useState("kenny");
   const [favoriteColor, setFavoriteColor] = useState("orange");
   const [rememberMe, setRememberMe] = useState(true);
   const [avatar, setAvatar] = useState("https://picsum.photos/200/300");
+  const [users, setUsers] = useState(null);
+
+  useEffect(() => {
+    getUsers().then((data) => setUsers(data));
+  }, []);
 
   const handleName = (e) => {
     setName(e.target.value);
@@ -22,10 +29,11 @@ function App() {
     setAvatar(e.target.checked);
   };
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     const formData = { name, favoriteColor, avatar, rememberMe };
-    console.log({ formData });
+    const data = await postUsers(formData);
+    console.log({ formData, data });
   }
   return (
     <>
@@ -40,6 +48,18 @@ function App() {
         rememberMe={rememberMe}
         avatar={avatar}
       />
+      <div className="grid grid-cols-2">
+        {users &&
+          users.map(({ key, avatar, favoriteColor, name, rememberMe }) => (
+            <Card
+              key={key}
+              avatar={avatar}
+              favoriteColor={favoriteColor}
+              name={name}
+              rememberMe={rememberMe}
+            />
+          ))}
+      </div>
     </>
   );
 }
