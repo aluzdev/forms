@@ -1,17 +1,17 @@
-export const Form = ({
-  handleName,
-  handleFavoriteColor,
-  handleRememberMe,
-  handleAvatar,
-  handleSubmit,
-  name,
-  favoriteColor,
-  rememberMe,
-  avatar,
-}) => {
+import { useForm } from "react-hook-form";
+
+export const Form = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = (data) => console.log(data);
+
   return (
     <>
-      <form className="max-w-sm mx-auto" onSubmit={handleSubmit}>
+      <form className="max-w-sm mx-auto" onSubmit={handleSubmit(onSubmit)}>
         <div className="mb-5">
           <label
             htmlFor="name"
@@ -24,10 +24,10 @@ export const Form = ({
             id="name"
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder="Pochita"
-            required
-            value={name}
-            onChange={handleName}
+            defaultValue="test"
+            {...register("name", { required: true })}
           />
+          {errors.name && <span>This field is required</span>}
         </div>
         <div className="mb-5">
           <label
@@ -41,10 +41,9 @@ export const Form = ({
             placeholder="blue"
             id="favorite-color"
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            required
-            value={favoriteColor}
-            onChange={handleFavoriteColor}
+            {...register("favoriteColor", { required: true })}
           />
+          {errors.favoriteColor && <span>This field is required</span>}
         </div>
         <div className="mb-5">
           <label
@@ -58,10 +57,9 @@ export const Form = ({
             placeholder="img url"
             id="avatar"
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            required
-            value={avatar}
-            onChange={handleAvatar}
+            {...register("avatar", { required: true })}
           />
+          {errors.avatar && <span>This field is required</span>}
         </div>
 
         <div className="flex items-start mb-5">
@@ -70,8 +68,7 @@ export const Form = ({
               id="remember"
               type="checkbox"
               className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800"
-              checked={rememberMe}
-              onChange={handleRememberMe}
+              {...register("rememberMe")}
             />
           </div>
           <label
